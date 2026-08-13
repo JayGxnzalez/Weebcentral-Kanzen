@@ -122,7 +122,10 @@ function parseChapters(dom){
             const titleNode = KanzenBundle.cssSelect.selectAll("span.flex > span", chapterNodes[x]);
             const text = getText(titleNode[0])
             //console.log(text)
-            const href = chapterNodes[x].attribs?.href ?? "";
+            let href = chapterNodes[x].attribs?.href ?? "";
+            if (href && !href.startsWith("http")) {
+                href = baseUrl + href
+            }
             chapterData = {"id":href,"scanlation_group":"Weeb Central","title":text}
             
             chapters.push([chapterData])
