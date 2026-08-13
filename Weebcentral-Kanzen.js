@@ -2,13 +2,6 @@
 // KanzenBundle.cssSelect
 const baseUrl = `https://weebcentral.com`
 
-const defaultHeaders = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-    "Accept-Encoding": "gzip, deflate, br, zstd",
-    "Referer": "https://weebcentral.com/",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
-}
-
 async function searchContent(input,page=0)
 { 
 
@@ -44,17 +37,24 @@ async function getChapters(id) {
     const chapters = parseChapters(dom)
     return chapters
 }
-async function  getChapterImages(params) {
+async function getChapterImages(params) {
     const url = `${params}/images?is_prev=False&current_page=1&reading_style=long_strip`
-    const response = await fetch(url, { headers: defaultHeaders })
-    console.log("status: " + response.status)
-    const text = await response.text()
-    console.log("text length: " + text.length)
-    const dom = KanzenBundle.htmlparser2.parseDocument(text)
-    console.log(url)
-    const arr = parseChapterImages(dom)
-    return arr
-    
+    try {
+        const response = await fetch(url, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+            }
+        })
+        console.log("status: " + response.status)
+        const text = await response.text()
+        console.log("text length: " + text.length)
+        const dom = KanzenBundle.htmlparser2.parseDocument(text)
+        const arr = parseChapterImages(dom)
+        return arr
+    } catch (e) {
+        console.log("ERROR: " + e.message)
+        return []
+    }
 }
 //util Functions
 function parseSearchContent(dom)
