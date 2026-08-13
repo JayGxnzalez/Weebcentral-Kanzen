@@ -38,17 +38,18 @@ async function getContentData(id) {
 }
 async function getChapters(id) {
     const url = `${id}/full-chapter-list`
-    const response = await fetch(url, { headers: defaultHeaders })
+    const response = await fetch(url)
     const text = await response.text()
     const dom = KanzenBundle.htmlparser2.parseDocument(text)
     const chapters = parseChapters(dom)
     return chapters
 }
 async function  getChapterImages(params) {
-    console.log
     const url = `${params}/images?is_prev=False&current_page=1&reading_style=long_strip`
     const response = await fetch(url, { headers: defaultHeaders })
+    console.log("status: " + response.status)
     const text = await response.text()
+    console.log("text length: " + text.length)
     const dom = KanzenBundle.htmlparser2.parseDocument(text)
     console.log(url)
     const arr = parseChapterImages(dom)
