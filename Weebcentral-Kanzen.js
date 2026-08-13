@@ -1,4 +1,3 @@
-
 // KanzenBundle.htmlparse2
 // KanzenBundle.cssSelect
 const baseUrl = `https://weebcentral.com`
@@ -40,7 +39,7 @@ async function getChapters(id) {
 }
 async function  getChapterImages(params) {
     console.log
-    const url = `${params}/images?is_prev=False&reading_style=long_strip`
+    const url = `${params}/images?is_prev=False&current_page=1&reading_style=long_strip`
     const response = await fetch(url)
     const text = await response.text()
     const dom = KanzenBundle.htmlparser2.parseDocument(text)
@@ -131,7 +130,7 @@ function parseChapters(dom){
 }
 
 function parseChapterImages(dom){
-    const imgs = KanzenBundle.cssSelect.selectAll('section[x-data*="scroll"] > img', dom);
+    const imgs = KanzenBundle.cssSelect.selectAll('section.flex > img', dom);
     const imgUrl = []
     console.log(imgs.length)
 // 3️⃣ Work with results
